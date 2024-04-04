@@ -7,6 +7,12 @@ CONFIG.py
 # Pytorch models
 *.pt
 
+# GIS Shapefile folder
+Data/mapping_shapefiles/
+
+# Venv
+myenv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
