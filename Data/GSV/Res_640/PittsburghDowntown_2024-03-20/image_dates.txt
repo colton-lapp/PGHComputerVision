@@ -1,0 +1,4 @@
+Loading one panorama per location.
+Optimal date: 2024-03-20
+Minimum date: 2022-03-20 
+Maximum date: 2024-03-20
