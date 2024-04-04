@@ -36,20 +36,23 @@ import streetview
 from tqdm import tqdm
 
 import sys
-sys.path.append('/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e')
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+proj_root = os.path.dirname(root)
+data_root = os.path.join(proj_root, 'Data')
 
-import DataScripts.CONFIG as CONFIG
-from DataScripts.urbanchange_utils import get_SV_image, get_SV_metadata
-from DataScripts.urbanchange_utils import AppendLogger, Logger
-from DataScripts.read_files import load_segment_dict, prep_image_log
+sys.path.append(os.path.join(root, 'helpers'))
+import CONFIG as CONFIG
+from urbanchange_utils import get_SV_image, get_SV_metadata
+from urbanchange_utils import AppendLogger, Logger
+from read_files import load_segment_dict, prep_image_log
 
 
 # Parameters
 SELECTED_LOCATION = 'PittsburghDowntown'
 SEGMENT_DICTIONARY = os.path.join(
-    '..', '..', 'Data', 'ProcessedData', 'SFStreetView',
+     data_root, 'GSV',
     'segment_dictionary_{}.json'.format(SELECTED_LOCATION))
-
+os.path.exists(SEGMENT_DICTIONARY)
 TIME_PERIOD = ['google_default', 'selected', 'full'][1]
 PERIOD_SELECTION = {
     'optimal_date': date(2024, 3, 20),
@@ -61,16 +64,16 @@ SEGMENT_RESTRICTION = None
 # Set up image parameters and output directory
 if TIME_PERIOD == 'google_default':
     OUTPUT_PATH = os.path.join(
-        '..', '..', 'Data', 'ProcessedData', 'SFStreetView', 'Res_640',
+        data_root, 'GSV', 'Res_640',
         SELECTED_LOCATION)
 elif TIME_PERIOD == 'selected':
     OUTPUT_PATH = os.path.join(
-        '..', '..', 'Data', 'ProcessedData', 'SFStreetView', 'Res_640',
+        data_root,  'GSV', 'Res_640',
         '{}_{}'.format(
             SELECTED_LOCATION, str(PERIOD_SELECTION['optimal_date'])))
 elif TIME_PERIOD == 'full':
     OUTPUT_PATH = os.path.join(
-        '..', '..', 'Data', 'ProcessedData', 'SFStreetView', 'Res_640',
+        data_root,  'GSV', 'Res_640',
         '{}_full_{}_{}'.format(
             SELECTED_LOCATION, str(PERIOD_SELECTION['min'].year),
             str(PERIOD_SELECTION['max'].year)))

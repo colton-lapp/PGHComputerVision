@@ -27,18 +27,23 @@ from shapely.geometry import Point
 from tqdm import tqdm
 
 import sys
-sys.path.append('/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e')
 
-from DataScripts.locations import LOCATIONS
-from DataScripts.urbanchange_utils import compute_heading
-from DataScripts.urbanchange_utils import generate_new_latlng_from_distance
-from DataScripts.urbanchange_utils import generate_location_graph, AppendLogger
+# Append path Code/helpers to sys.path
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+proj_root = os.path.dirname(root)
+data_root = os.path.join(proj_root, 'Data')
+sys.path.append(os.path.join(root, 'helpers'))
+
+from locations import LOCATIONS
+from urbanchange_utils import compute_heading
+from urbanchange_utils import generate_new_latlng_from_distance
+from urbanchange_utils import generate_location_graph, AppendLogger
 
 
 # Parameters
 R = 6378.1  # Radius of the Earth
 DIST = 0.005  # Distance between images (km)
-OUTPUT_PATH = '/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e/Data/ProcessedData/SFStreetView'
+OUTPUT_PATH =   os.path.join(data_root, 'GSV') # Google Street View
 SELECTED_LOCATION = 'PittsburghDowntown'
 OUTPUT_FILE = 'segment_dictionary_{}.json'.format(SELECTED_LOCATION)
 INTERMEDIATE_FILE_PATH = 'intermediate_segment_dictionary_{}.txt'.format(SELECTED_LOCATION)
@@ -171,9 +176,10 @@ def generate_latlng(linestring, bearing, visualize):
                 next_lng=next_lng, new_lat=new_lat, new_lng=new_lng)
 
             if visualize:
-                df = df.append(
-                    {'geometry': Point(new_lng, new_lat), 'color': 2},
-                    ignore_index=True)
+                df = pd.concat([df, 
+                                pd.DataFrame({'geometry': [Point(new_lng, new_lat)],
+                                               'color': [0]})],
+                                                 ignore_index=True)
                 plot_traversal(df)
 
             # If the step is within bounds, we add it to the list of tuples
@@ -182,9 +188,10 @@ def generate_latlng(linestring, bearing, visualize):
                 GSV_tuples.append(((cur_lat, cur_lng), heading1, heading2))
 
                 if visualize:
-                    df = df.append(
-                        {'geometry': Point(cur_lng, cur_lat), 'color': 1},
-                        ignore_index=True)
+                    df = pd.concat([df, 
+                                    pd.DataFrame({'geometry': [Point(new_lng, new_lat)],
+                                               'color': [1]})],
+                                                 ignore_index=True)
                     plot_traversal(df)
 
     return GSV_tuples
@@ -247,9 +254,10 @@ street_segments_full = street_segments_full.dropna(subset=['geometry'])
 # Get the (begin, end) nodes from the full street data for each subsegment
 #street_segments_full[['node1']] = street_segments_full['geometry'].apply(
 #    lambda x: Point(np.array(x.coords[0], dtype=object)))
-#
+
 #street_segments_full[['node2']] = street_segments_full['geometry'].apply(
 #    lambda x: Point(np.array(x.coords[1], dtype=object)))
+
 # Initialize empty lists to store node1 and node2
 node1_list = []
 node2_list = []

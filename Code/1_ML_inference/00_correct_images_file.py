@@ -7,8 +7,13 @@ import shutil
 from tqdm import tqdm
 
 import sys
-sys.path.append('/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e')
-from DataScripts.urbanchange_utils import Logger
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+proj_root = os.path.dirname(root)
+data_root = os.path.join(proj_root, 'Data')
+
+sys.path.append(os.path.join(root, 'helpers'))
+
+from urbanchange_utils import Logger
 
 
 # Parameters

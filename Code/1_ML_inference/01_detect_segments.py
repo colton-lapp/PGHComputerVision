@@ -26,9 +26,14 @@ import torch
 from tqdm import tqdm
 
 import sys
-sys.path.append('/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e')
-from DataScripts.read_files import load_segment_dict
-from DataScripts.urbanchange_utils import AppendLogger
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+proj_root = os.path.dirname(root)
+data_root = os.path.join(proj_root, 'Data')
+
+sys.path.append(os.path.join(root, 'helpers'))
+
+from read_files import load_segment_dict
+from urbanchange_utils import AppendLogger
 
 from ultralytics import YOLO
 yolo_model = 'v8'
@@ -40,9 +45,9 @@ if ~run_from_command_line:
     args = {
         'weights': 'path_to_weights.pt',
         'size': 640,
-        'segment_dictionary': '/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e/Data/ProcessedData/SFStreetView/segment_dictionary_PittsburghDowntown.json',
-        'output_path': '/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e/Data/Output/YOLO_output/',
-        'input_images': '/Users/coltonlapp/Dropbox/My Mac (Coltons-MacBook-Pro.local)/Desktop/SCHOOL/Year2_Spring/IndepStudyProject/yoloso-urbanchange-6f00b5e/Data/ProcessedData/SFStreetView/Res_640/PittsburghDowntown_2024-03-20/'
+        'segment_dictionary': os.path.join(data_root, 'GSV/segment_dictionary_PittsburghDowntown.json') ,
+        'output_path': os.path.join(data_root, 'YOLO_output', f'YOLO{yolo_model}'),
+        'input_images':  os.path.join( data_root, 'GSV' ,'Res_640', 'PittsburghDowntown_2024-03-20' )
     }
 
 
