@@ -6,9 +6,11 @@ CONFIG.py
 
 # Pytorch models
 *.pt
+*.pth
 
 # GIS Shapefile folder
 Data/mapping_shapefiles/
+Data/GSV/Res_640/in_downtown/downtown_shpfiles
 
 # Venv
 myenv/
